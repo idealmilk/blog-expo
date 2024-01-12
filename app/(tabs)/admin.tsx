@@ -74,7 +74,7 @@ export default function AdminScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { paddingVertical: 20, paddingHorizontal: 20 },
+  container: { paddingVertical: 20, paddingHorizontal: 20, height: "100%" },
   list: {},
   item: {
     display: "flex",

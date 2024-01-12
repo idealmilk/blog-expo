@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 import PostForm from "../../components/PostForm";
 import { Post } from "../../types/Post";
 import { View } from "../../components/Themed";
-import { router, useLocalSearchParams } from "expo-router";
+import { Stack, router, useLocalSearchParams } from "expo-router";
 import { useState, useEffect } from "react";
 
 export default function NewPost() {
@@ -50,11 +50,12 @@ export default function NewPost() {
 
   return (
     <View style={styles.container}>
-      <PostForm post={post} postAction={editPost} />
+      <Stack.Screen options={{ title: `Edit Post: ${post.title}` }} />
+      <PostForm post={post} setPost={setPost} postAction={editPost} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { paddingVertical: 20 },
+  container: { paddingVertical: 20, height: "100%" },
 });

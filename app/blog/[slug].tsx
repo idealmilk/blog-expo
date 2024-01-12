@@ -1,7 +1,7 @@
 import axios from "axios";
 import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 
 import { Text, View } from "../../components/Themed";
 import { formatDate } from "./../../helpers/formatDate";
@@ -22,13 +22,14 @@ export default function BlogPost() {
   }, [slug]);
 
   if (!post) {
-    return <div>Loading..</div>;
+    return <Text>Loading..</Text>;
   }
 
   const dateTime = new Date(post.dateTime);
 
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ title: `Blog: ${post.title}` }} />
       <View style={styles.wrap}>
         <Text style={styles.date}>{formatDate(dateTime)}</Text>
         <Text style={styles.title}>{post.title}</Text>
@@ -39,7 +40,7 @@ export default function BlogPost() {
 }
 
 const styles = StyleSheet.create({
-  container: { width: "100%", paddingTop: 40 },
+  container: { width: "100%", height: "100%", paddingTop: 40 },
   wrap: { paddingHorizontal: 20 },
   date: {
     fontSize: 12,

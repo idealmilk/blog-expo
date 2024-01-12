@@ -5,46 +5,69 @@ import { Button, TextInput, StyleSheet, Pressable } from "react-native";
 import { View, Text } from "./Themed";
 import { Post } from "../types/Post";
 import { formatDate } from "../helpers/formatDate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { FormErrors } from "../types/FormErrors";
 
 type PostFormProps = {
-  post?: Post;
+  post: Post;
+  setPost: Function;
   postAction: Function;
 };
 
-export default function PostForm({ post, postAction }: PostFormProps) {
-  const dateTime = post ? new Date(post.dateTime) : new Date();
-
-  const validationSchema = z.object({
-    title: z.string().min(1, { message: "Title is required" }),
-    slug: z.string().min(1, { message: "Slug is required" }),
-    body: z.string().min(1, { message: "Body is required" }),
+export default function PostForm({ post, setPost, postAction }: PostFormProps) {
+  const [errors, setErrors] = useState<FormErrors>({
+    title: "",
+    slug: "",
+    body: "",
   });
+  const dateTime =
+    post.dateTime.length > 0 ? new Date(post.dateTime) : new Date();
 
-  type ValidationSchema = z.infer<typeof validationSchema>;
+  const validatePost = () => {
+    let isValid = true;
+    setErrors({ title: "", slug: "", body: "" }); // Reset errors before validation
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<ValidationSchema>({
-    resolver: zodResolver(validationSchema),
-    defaultValues: {
-      title: post?.title ? post.title : "",
-      slug: post?.slug ? post.slug : "",
-      body: post?.body ? post.body : "",
-    },
-  });
+    if (!post.title || post.title.trim().length === 0) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        title: "Title is required",
+      }));
+      isValid = false;
+    }
 
-  const onSubmit: SubmitHandler<ValidationSchema> = (data) => {
-    // const onSubmit: SubmitHandler<ValidationSchema> = (data) => postAction(data);
+    const slugPattern = /^[a-zA-Z0-9-]+$/;
+    if (!post.slug || post.slug.trim().length === 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, slug: "Slug is required" }));
+      isValid = false;
+    } else if (!slugPattern.test(post.slug)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        slug: "Slug can only contain alphabets, numbers, and hyphens",
+      }));
+      isValid = false;
+    }
 
-    console.log("Creatin");
+    if (!post.body || post.body.trim().length === 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, body: "Body is required" }));
+      isValid = false;
+    }
+
+    return isValid;
   };
 
-  const onInvalid = (errors: any) => console.error(errors);
+  const handleChange = (name: string, value: string) => {
+    setPost((prevState: Post[]) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    const isValid = validatePost();
+    if (isValid) {
+      postAction(post);
+    }
+  };
 
   return (
     <View style={styles.form}>
@@ -55,62 +78,52 @@ export default function PostForm({ post, postAction }: PostFormProps) {
 
       <View style={[styles.wrap]}>
         <Text style={[styles.label]}>タイトル</Text>
+        <View>
+          {errors.title.length > 0 && (
+            <Text style={styles.error}>{errors.title}</Text>
+          )}
+        </View>
         <TextInput
-          {...register("title")}
+          value={post.title}
           id="firstName"
           placeholder="タイトルを入力してください"
           placeholderTextColor="gray"
-          style={[styles.input, errors.title && { borderColor: "red" }]}
-          onChangeText={(text) =>
-            setValue("title", text, { shouldValidate: true })
-          }
-          value={watch("title")}
+          style={[styles.input]}
+          onChangeText={(value) => handleChange("title", value)}
         />
-        {errors.title && (
-          <Text style={styles.error}>{errors.title.message || "Error"}</Text>
-        )}
       </View>
 
       <View style={[styles.wrap]}>
         <Text style={[styles.label]}>スラッグ</Text>
+        {errors.slug.length > 0 && (
+          <Text style={styles.error}>{errors.slug}</Text>
+        )}
         <TextInput
-          {...register("slug")}
           placeholder="スラッグを入力してください"
           placeholderTextColor="gray"
-          style={[styles.input, errors.slug && { borderColor: "red" }]}
-          onChangeText={(text) =>
-            setValue("slug", text, { shouldValidate: true })
-          }
-          value={watch("slug")}
+          style={[styles.input]}
+          onChangeText={(value) => handleChange("slug", value)}
+          value={post.slug}
         />
-        {errors.slug && (
-          <Text style={styles.error}>{errors.slug.message || "Error"}</Text>
-        )}
       </View>
 
       <View style={[styles.wrap]}>
         <Text style={[styles.label]}>記事詳細</Text>
+        {errors.body.length > 0 && (
+          <Text style={styles.error}>{errors.body}</Text>
+        )}
         <TextInput
-          {...register("body")}
           multiline={true}
           numberOfLines={4}
           placeholder="記事詳細を入力してください"
           placeholderTextColor="gray"
-          style={[styles.input, errors.body && { borderColor: "red" }]}
-          onChangeText={(text) =>
-            setValue("body", text, { shouldValidate: true })
-          }
-          value={watch("body")}
+          style={[styles.input]}
+          onChangeText={(value) => handleChange("body", value)}
+          value={post.body}
         />
-        {errors.body && (
-          <Text style={styles.error}>{errors.body.message || "Error"}</Text>
-        )}
       </View>
 
-      <Pressable
-        style={styles.button}
-        onPress={() => handleSubmit(onSubmit, onInvalid)}
-      >
+      <Pressable style={styles.button} onPress={handleSubmit}>
         <Text style={styles.text}>Save</Text>
       </Pressable>
     </View>
@@ -156,5 +169,6 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     fontSize: 14,
+    paddingBottom: 8,
   },
 });

@@ -4,8 +4,17 @@ import { Alert, Text, Pressable, StyleSheet } from "react-native";
 import PostForm from "../../components/PostForm";
 import { Post } from "../../types/Post";
 import { View } from "../../components/Themed";
+import { router } from "expo-router";
+import { useState } from "react";
 
 export default function NewPost() {
+  const [post, setPost] = useState({
+    title: "",
+    slug: "",
+    dateTime: "",
+    body: "",
+  });
+
   const createPost = async (data: Post) => {
     data.dateTime = new Date().toISOString();
 
@@ -20,7 +29,7 @@ export default function NewPost() {
         }
       );
       console.log("Post created successfully", response.data);
-      // router.push("/admin");
+      router.replace("/admin");
     } catch (error) {
       console.error("Failed to create post", error);
     }
@@ -28,11 +37,11 @@ export default function NewPost() {
 
   return (
     <View style={styles.container}>
-      <PostForm postAction={createPost} />
+      <PostForm post={post} setPost={setPost} postAction={createPost} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { paddingVertical: 20 },
+  container: { paddingVertical: 20, height: "100%" },
 });
