@@ -20,6 +20,14 @@ export default function HomeScreen() {
     setCurrentPage((prevPage) => prevPage + 1);
   };
 
+  const renderFooter = () => {
+    return hasMorePosts ? (
+      <Pressable style={styles.button} onPress={handleLoadMore}>
+        <Text style={styles.text}>Load More</Text>
+      </Pressable>
+    ) : null;
+  };
+
   return (
     <View style={styles.container}>
       {posts && posts.length > 0 && (
@@ -27,22 +35,20 @@ export default function HomeScreen() {
           data={posts}
           renderItem={({ item }) => <PostCard data={item} />}
           keyExtractor={(item) => item.slug}
+          ListFooterComponent={renderFooter}
           style={styles.list}
         />
-      )}
-
-      {hasMorePosts && (
-        <Pressable style={styles.button} onPress={handleLoadMore}>
-          <Text style={styles.text}>Load More</Text>
-        </Pressable>
       )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {},
-  list: { paddingHorizontal: 20, paddingTop: 20 },
+  container: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  list: {},
   title: {
     fontSize: 20,
     fontWeight: "bold",
@@ -50,6 +56,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     justifyContent: "center",
+    marginVertical: 20,
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,

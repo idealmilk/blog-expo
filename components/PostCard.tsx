@@ -14,12 +14,12 @@ export default function PostCard({ data }: PostCardProps) {
   return (
     <View style={styles.card}>
       <Text style={styles.dateText}>{formatDate(dateTime)}</Text>
-      <Link href={`/blog/${data.slug}`}>
+      <Link href={`/blog/${data.slug}`} style={styles.title}>
         <Text style={styles.title}>{data.title}</Text>
       </Link>
       <Text style={styles.body}>{truncateString(data.body, 140)}</Text>
       <Link href={`/blog/${data.slug}`} style={styles.readMore}>
-        <Text style={styles.readMore}>READ MORE</Text>
+        <Text style={styles.readMoreText}>READ MORE</Text>
       </Link>
     </View>
   );
@@ -28,7 +28,7 @@ export default function PostCard({ data }: PostCardProps) {
 const styles = StyleSheet.create({
   card: {
     width: "100%",
-    paddingVertical: 8,
+    paddingVertical: 30,
     borderBottomWidth: 1,
     borderBottomColor: "gray",
   },
@@ -37,14 +37,26 @@ const styles = StyleSheet.create({
     fontWeight: "300",
   },
   title: {
-    fontSize: 24,
-    paddingTop: 60,
+    paddingTop: 6,
+    paddingBottom: 20,
+    fontSize: 30,
   },
   body: {
     fontSize: 16,
   },
   readMore: {
-    paddingTop: 4,
-    color: "blue",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "auto",
+    paddingVertical: 12,
+    paddingTop: 40,
+  },
+  readMoreText: {
+    fontSize: 16,
+    marginHorizontal: "auto",
+    fontWeight: "bold",
+    letterSpacing: 0.5,
+    color: "white",
   },
 });
