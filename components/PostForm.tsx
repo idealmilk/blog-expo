@@ -1,12 +1,10 @@
-import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextInput, StyleSheet, Pressable } from "react-native";
-import { View, Text } from "./Themed";
-import { Post } from "../types/Post";
-import { formatDate } from "../helpers/formatDate";
-import { useEffect, useState } from "react";
-import { FormErrors } from "../types/FormErrors";
+import { useState } from "react";
+import { TextInput, StyleSheet, Pressable } from "react-native";
+
+import { View, Text } from "./../components/Themed";
+import { formatDate } from "./../helpers/formatDate";
+import { Post } from "./../types/Post";
+import { FormErrors } from "./../types/FormErrors";
 
 type PostFormProps = {
   post: Post;
