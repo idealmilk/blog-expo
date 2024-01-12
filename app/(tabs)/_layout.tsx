@@ -1,6 +1,6 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
-import { Pressable, useColorScheme } from "react-native";
+import { Tabs } from "expo-router";
+import { useColorScheme } from "react-native";
 
 import Colors from "../../constants/Colors";
 
@@ -28,6 +28,13 @@ export default function TabLayout() {
         options={{
           title: "Feed",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="new-post"
+        options={{
+          title: "New Post",
+          tabBarIcon: ({ color }) => <TabBarIcon name="pencil" color={color} />,
         }}
       />
       <Tabs.Screen

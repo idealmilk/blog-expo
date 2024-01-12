@@ -13,7 +13,7 @@ export default function BlogPost() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/api/posts/${slug}`)
+      .get(`http://192.168.1.21:4000/api/posts/${slug}`)
       .then((response) => {
         console.log("Fetched post:", response.data); // Log the fetched post
         setPost(response.data);
@@ -40,7 +40,7 @@ export default function BlogPost() {
 
 const styles = StyleSheet.create({
   container: { width: "100%", paddingTop: 40 },
-  wrap: { width: "80%", marginHorizontal: "auto" },
+  wrap: { paddingHorizontal: 20 },
   date: {
     fontSize: 12,
     fontWeight: "300",

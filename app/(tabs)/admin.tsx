@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, Pressable, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 
 import { LoadPosts } from "../../helpers/loadPosts";
@@ -8,6 +8,7 @@ import { Post } from "../../types/Post";
 import IconButton from "../../components/IconButton";
 import { formatDate } from "../../helpers/formatDate";
 import axios from "axios";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function AdminScreen() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -24,7 +25,7 @@ export default function AdminScreen() {
 
   const deletePost = async (slug: string) => {
     try {
-      await axios.delete(`http://localhost:4000/api/posts/${slug}`);
+      await axios.delete(`http://192.168.1.21:4000/api/posts/${slug}`);
       console.log("Post deleted successfully");
       setPosts((posts) => posts.filter((post) => post.slug !== slug));
     } catch (error) {
@@ -47,7 +48,9 @@ export default function AdminScreen() {
               </View>
 
               <View style={styles.icons}>
-                <IconButton icon="edit" onPress={() => alert("Clicked")} />
+                <Link href={`/edit/${item.slug}`}>
+                  <IconButton icon="edit" />
+                </Link>
 
                 <IconButton
                   icon="delete"
@@ -56,16 +59,22 @@ export default function AdminScreen() {
               </View>
             </View>
           )}
-          keyExtractor={(item) => item.slug}
+          // keyExtractor={(item) => item.slug}
           style={styles.list}
         />
+      )}
+
+      {hasMorePosts && (
+        <Pressable style={styles.button} onPress={handleLoadMore}>
+          <Text style={styles.text}>Load More</Text>
+        </Pressable>
       )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { paddingVertical: 20, width: "80%", marginHorizontal: "auto" },
+  container: { paddingVertical: 20, paddingHorizontal: 20 },
   list: {},
   item: {
     display: "flex",
@@ -78,5 +87,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     justifyContent: "space-between",
+  },
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "black",
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
   },
 });

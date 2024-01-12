@@ -1,9 +1,9 @@
 import axios from "axios";
-import { StyleSheet } from "react-native";
+import { Alert, Text, Pressable, StyleSheet } from "react-native";
 
-import PostForm from "./../components/PostForm";
-import { Post } from "./../types/Post";
-import { View } from "../components/Themed";
+import PostForm from "../../components/PostForm";
+import { Post } from "../../types/Post";
+import { View } from "../../components/Themed";
 
 export default function NewPost() {
   const createPost = async (data: Post) => {
@@ -11,7 +11,7 @@ export default function NewPost() {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/posts",
+        "http://192.168.1.21:4000/api/posts",
         data,
         {
           headers: {

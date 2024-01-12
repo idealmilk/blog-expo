@@ -9,7 +9,7 @@ export const LoadPosts = (
   setHasMorePosts: Dispatch<SetStateAction<boolean>>
 ) => {
   axios
-    .get(`http://localhost:4000/api/posts?page=${currentPage}&limit=10`)
+    .get(`http://192.168.1.21:4000/api/posts?page=${currentPage}&limit=10`)
     .then((response) => {
       if (currentPage > 1) {
         setPosts((prevPosts: Post[]) => [...prevPosts, ...response.data]);

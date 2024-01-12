@@ -1,15 +1,16 @@
 import axios from "axios";
 import { StyleSheet } from "react-native";
-import { useState, useEffect } from "react";
-import { useLocalSearchParams } from "expo-router";
 
-import { Text, View } from "../../components/Themed";
-import { formatDate } from "../../helpers/formatDate";
+import PostForm from "../../components/PostForm";
 import { Post } from "../../types/Post";
+import { View } from "../../components/Themed";
+import { router, useLocalSearchParams } from "expo-router";
+import { useState, useEffect } from "react";
 
-export default function EditBlogPost() {
+export default function NewPost() {
   const { slug } = useLocalSearchParams();
   const [post, setPost] = useState<Post | null>(null);
+  const [originalSlug, setOriginalSlug] = useState<string | null>(null);
 
   useEffect(() => {
     axios
@@ -17,6 +18,7 @@ export default function EditBlogPost() {
       .then((response) => {
         console.log("Fetched post:", response.data); // Log the fetched post
         setPost(response.data);
+        setOriginalSlug(response.data.slug);
       })
       .catch((error) => console.error("Error fetching post:", error));
   }, [slug]);
@@ -25,32 +27,34 @@ export default function EditBlogPost() {
     return <div>Loading..</div>;
   }
 
-  const dateTime = new Date(post.dateTime);
+  const editPost = async (data: Post) => {
+    data.dateTime = post.dateTime;
+
+    try {
+      const response = await axios.put(
+        `http://localhost:4000/api/posts/${originalSlug}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Post updated successfully");
+      router.push("/admin");
+    } catch (error) {
+      console.error("Failed to update post", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.wrap}>
-        <Text style={styles.date}>{formatDate(dateTime)}</Text>
-        <Text style={styles.title}>{post.title}</Text>
-        <Text style={styles.body}>{post.body}</Text>
-      </View>
+      <PostForm post={post} postAction={editPost} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { width: "100%", paddingTop: 40 },
-  wrap: { width: "80%", marginHorizontal: "auto" },
-  date: {
-    fontSize: 12,
-    fontWeight: "300",
-  },
-  title: {
-    paddingBottom: 40,
-    paddingTop: 20,
-    fontSize: 24,
-    height: 1,
-    width: "80%",
-  },
-  body: {},
+  container: { paddingVertical: 20 },
 });

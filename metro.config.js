@@ -12,11 +12,12 @@ module.exports = (async () => {
     resolver: { sourceExts },
   } = await config;
 
+  // Add 'mjs' and 'cjs' to the existing sourceExts array
   return {
     ...config,
     resolver: {
       ...config.resolver,
-      sourceExts: [...sourceExts, "mjs"],
+      sourceExts: [...sourceExts, "mjs", "cjs"],
     },
   };
 })();
