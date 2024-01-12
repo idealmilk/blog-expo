@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet } from "react-native";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 import { LoadPosts } from "../../helpers/loadPosts";
 import { Text, View } from "../../components/Themed";
@@ -8,7 +8,6 @@ import { Post } from "../../types/Post";
 import IconButton from "../../components/IconButton";
 import { formatDate } from "../../helpers/formatDate";
 import axios from "axios";
-import { MaterialIcons } from "@expo/vector-icons";
 
 export default function AdminScreen() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -35,7 +34,7 @@ export default function AdminScreen() {
 
   return (
     <View style={styles.container}>
-      {posts && posts.length > 0 && (
+      {posts && posts.length > 0 ? (
         <FlatList
           data={posts}
           renderItem={({ item }) => (
@@ -48,9 +47,10 @@ export default function AdminScreen() {
               </View>
 
               <View style={styles.icons}>
-                <Link href={`/edit/${item.slug}`}>
-                  <IconButton icon="edit" />
-                </Link>
+                <IconButton
+                  icon="edit"
+                  onPress={() => router.push(`/edit/${item.slug}`)}
+                />
 
                 <IconButton
                   icon="delete"
@@ -62,13 +62,13 @@ export default function AdminScreen() {
           // keyExtractor={(item) => item.slug}
           style={styles.list}
         />
-      )}
+      ) : null}
 
-      {hasMorePosts && (
+      {hasMorePosts ? (
         <Pressable style={styles.button} onPress={handleLoadMore}>
           <Text style={styles.text}>Load More</Text>
         </Pressable>
-      )}
+      ) : null}
     </View>
   );
 }

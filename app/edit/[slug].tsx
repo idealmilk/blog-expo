@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 import PostForm from "../../components/PostForm";
 import { Post } from "../../types/Post";
-import { View } from "../../components/Themed";
+import { Text, View } from "../../components/Themed";
 import { Stack, router, useLocalSearchParams } from "expo-router";
 import { useState, useEffect } from "react";
 
@@ -14,7 +14,7 @@ export default function NewPost() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/api/posts/${slug}`)
+      .get(`http://192.168.1.21:4000/api/posts/${slug}`)
       .then((response) => {
         console.log("Fetched post:", response.data); // Log the fetched post
         setPost(response.data);
@@ -24,7 +24,7 @@ export default function NewPost() {
   }, [slug]);
 
   if (!post) {
-    return <div>Loading..</div>;
+    return <Text>Loading..</Text>;
   }
 
   const editPost = async (data: Post) => {
@@ -32,7 +32,7 @@ export default function NewPost() {
 
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/posts/${originalSlug}`,
+        `http://192.168.1.21:4000/api/posts/${originalSlug}`,
         data,
         {
           headers: {

@@ -79,9 +79,9 @@ export default function PostForm({ post, setPost, postAction }: PostFormProps) {
       <View style={[styles.wrap]}>
         <Text style={[styles.label]}>タイトル</Text>
         <View>
-          {errors.title.length > 0 && (
+          {errors.title.length > 0 ? (
             <Text style={styles.error}>{errors.title}</Text>
-          )}
+          ) : null}
         </View>
         <TextInput
           value={post.title}
@@ -95,9 +95,9 @@ export default function PostForm({ post, setPost, postAction }: PostFormProps) {
 
       <View style={[styles.wrap]}>
         <Text style={[styles.label]}>スラッグ</Text>
-        {errors.slug.length > 0 && (
+        {errors.slug.length > 0 ? (
           <Text style={styles.error}>{errors.slug}</Text>
-        )}
+        ) : null}
         <TextInput
           placeholder="スラッグを入力してください"
           placeholderTextColor="gray"
@@ -109,9 +109,9 @@ export default function PostForm({ post, setPost, postAction }: PostFormProps) {
 
       <View style={[styles.wrap]}>
         <Text style={[styles.label]}>記事詳細</Text>
-        {errors.body.length > 0 && (
+        {errors.body.length > 0 ? (
           <Text style={styles.error}>{errors.body}</Text>
-        )}
+        ) : null}
         <TextInput
           multiline={true}
           numberOfLines={4}

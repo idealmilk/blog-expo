@@ -30,7 +30,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {posts && posts.length > 0 && (
+      {posts && posts.length > 0 ? (
         <FlatList
           data={posts}
           renderItem={({ item }) => <PostCard data={item} />}
@@ -38,7 +38,7 @@ export default function HomeScreen() {
           ListFooterComponent={renderFooter}
           style={styles.list}
         />
-      )}
+      ) : null}
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Alert, Text, Pressable, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 import PostForm from "../../components/PostForm";
 import { Post } from "../../types/Post";
