@@ -1,19 +1,25 @@
 import { StyleSheet } from "react-native";
-import { formatDate } from "./../helpers/formatDate";
 import { truncateString } from "./../helpers/truncateString";
 import { Text, View } from "./../components/Themed";
 import { Post } from "./../types/Post";
 import { Link } from "expo-router";
+import { useMemo } from "react";
+import dayjs from "../utils/dayjs";
 
 type PostCardProps = {
   data: Post;
 };
 
 export default function PostCard({ data }: PostCardProps) {
-  const dateTime = new Date(data.dateTime);
+  const dateTime = useMemo(() => {
+    return new Date(data.dateTime);
+  }, [data.dateTime]);
+
   return (
     <View style={styles.card}>
-      <Text style={styles.dateText}>{formatDate(dateTime)}</Text>
+      <Text style={styles.dateText}>
+        {dayjs(dateTime).format("YYYY/MM/DD")}
+      </Text>
       <Link href={`/blog/${data.slug}`} style={styles.title}>
         <Text style={styles.title}>{data.title}</Text>
       </Link>

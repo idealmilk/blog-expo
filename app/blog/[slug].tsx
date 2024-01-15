@@ -1,37 +1,40 @@
-import axios from "axios";
-import { StyleSheet } from "react-native";
-import { useState, useEffect } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
 
+import { ReadSinglePost } from "../../api/posts";
 import { Text, View } from "../../components/Themed";
-import { formatDate } from "./../../helpers/formatDate";
 import { Post } from "./../../types/Post";
+import dayjs from "dayjs";
 
 export default function BlogPost() {
   const { slug } = useLocalSearchParams();
   const [post, setPost] = useState<Post | null>(null);
 
+  const fetchPost = async () => {
+    try {
+      const result = (await ReadSinglePost(slug as string)) as Post;
+      setPost(result);
+    } catch (error) {
+      console.error("Error fetching post:", error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(`http://192.168.1.21:4000/api/posts/${slug}`)
-      .then((response) => {
-        console.log("Fetched post:", response.data); // Log the fetched post
-        setPost(response.data);
-      })
-      .catch((error) => console.error("Error fetching post:", error));
+    fetchPost();
   }, [slug]);
 
   if (!post) {
     return <Text>Loading..</Text>;
   }
 
-  const dateTime = new Date(post.dateTime);
-
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: `Blog: ${post.title}` }} />
       <View style={styles.wrap}>
-        <Text style={styles.date}>{formatDate(dateTime)}</Text>
+        <Text style={styles.date}>
+          {dayjs(post.dateTime).format("YYYY/MM/DD")}
+        </Text>
         <Text style={styles.title}>{post.title}</Text>
         <Text style={styles.body}>{post.body}</Text>
       </View>

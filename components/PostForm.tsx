@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { TextInput, StyleSheet, Pressable } from "react-native";
 
 import { View, Text } from "./../components/Themed";
-import { formatDate } from "./../helpers/formatDate";
 import { Post } from "./../types/Post";
 import { FormErrors } from "./../types/FormErrors";
+import dayjs from "../utils/dayjs";
 
 type PostFormProps = {
   post: Post;
@@ -18,8 +18,12 @@ export default function PostForm({ post, setPost, postAction }: PostFormProps) {
     slug: "",
     body: "",
   });
-  const dateTime =
-    post.dateTime.length > 0 ? new Date(post.dateTime) : new Date();
+
+  const dateTime = useMemo(() => {
+    return post.dateTime.length > 0
+      ? dayjs(new Date(post.dateTime))
+      : dayjs(new Date());
+  }, []);
 
   const validatePost = () => {
     let isValid = true;
@@ -71,7 +75,9 @@ export default function PostForm({ post, setPost, postAction }: PostFormProps) {
     <View style={styles.form}>
       <View style={[styles.wrap]}>
         <Text style={[styles.label]}>投稿日</Text>
-        <Text style={[styles.input]}>{formatDate(dateTime)}</Text>
+        <Text style={[styles.input]}>
+          {dayjs(dateTime).format("YYYY/MM/DD")}
+        </Text>
       </View>
 
       <View style={[styles.wrap]}>

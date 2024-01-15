@@ -2,20 +2,44 @@ import { useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet } from "react-native";
 import { Link, router } from "expo-router";
 
-import { LoadPosts } from "../../helpers/loadPosts";
 import { Text, View } from "../../components/Themed";
 import { Post } from "../../types/Post";
 import IconButton from "../../components/IconButton";
-import { formatDate } from "../../helpers/formatDate";
 import axios from "axios";
+import { ReadAllPosts } from "../../api/posts";
+import dayjs from "../../utils/dayjs";
 
 export default function AdminScreen() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
+  const limit = 10;
+
+  const fetchPosts = async () => {
+    try {
+      const result = await ReadAllPosts(currentPage, limit);
+
+      if (!Array.isArray(result)) {
+        console.error("Received non-array result:", result);
+        return;
+      }
+
+      if (currentPage > 1) {
+        setPosts((prevPosts) => [...prevPosts, ...result]);
+      } else {
+        setPosts(result);
+      }
+
+      setHasMorePosts(result.length >= limit);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      setPosts([]);
+    }
+  };
+
   useEffect(() => {
-    LoadPosts(setPosts, currentPage, setHasMorePosts);
+    fetchPosts();
   }, [currentPage]);
 
   const handleLoadMore = () => {
@@ -40,7 +64,7 @@ export default function AdminScreen() {
           renderItem={({ item }) => (
             <View style={styles.item}>
               <View>
-                <Text>{formatDate(new Date(item.dateTime))}</Text>
+                <Text>{dayjs(item.dateTime).format("YYYY/MM/DD")}</Text>
                 <Link href={`/blog/${item.slug}`}>
                   <Text>{item.title}</Text>
                 </Link>
