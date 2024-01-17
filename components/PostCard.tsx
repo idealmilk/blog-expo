@@ -1,13 +1,13 @@
 import { StyleSheet } from "react-native";
 import { truncateString } from "./../helpers/truncateString";
 import { Text, View } from "./../components/Themed";
-import { Post } from "./../types/Post";
+import { TPost } from "./../types/Post";
 import { Link } from "expo-router";
 import { useMemo } from "react";
 import dayjs from "../utils/dayjs";
 
 type PostCardProps = {
-  data: Post;
+  data: TPost;
 };
 
 export default function PostCard({ data }: PostCardProps) {

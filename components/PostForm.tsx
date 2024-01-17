@@ -2,18 +2,18 @@ import { useMemo, useState } from "react";
 import { TextInput, StyleSheet, Pressable } from "react-native";
 
 import { View, Text } from "./../components/Themed";
-import { Post } from "./../types/Post";
-import { FormErrors } from "./../types/FormErrors";
+import { TPost } from "./../types/Post";
+import { TPostFormErrors } from "./../types/Post";
 import dayjs from "../utils/dayjs";
 
 type PostFormProps = {
-  post: Post;
+  post: TPost;
   setPost: Function;
   postAction: Function;
 };
 
 export default function PostForm({ post, setPost, postAction }: PostFormProps) {
-  const [errors, setErrors] = useState<FormErrors>({
+  const [errors, setErrors] = useState<TPostFormErrors>({
     title: "",
     slug: "",
     body: "",
@@ -58,7 +58,7 @@ export default function PostForm({ post, setPost, postAction }: PostFormProps) {
   };
 
   const handleChange = (name: string, value: string) => {
-    setPost((prevState: Post[]) => ({
+    setPost((prevState: TPost[]) => ({
       ...prevState,
       [name]: value,
     }));

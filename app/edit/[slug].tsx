@@ -1,20 +1,30 @@
-import axios from "axios";
 import { StyleSheet } from "react-native";
+import {
+  Stack,
+  router,
+  useFocusEffect,
+  useLocalSearchParams,
+} from "expo-router";
+import { useState, useEffect, useCallback } from "react";
 
 import PostForm from "../../components/PostForm";
-import { Post } from "../../types/Post";
+import { TPost } from "../../types/Post";
 import { Text, View } from "../../components/Themed";
-import { Stack, router, useLocalSearchParams } from "expo-router";
-import { useState, useEffect, useCallback } from "react";
 import { ReadSinglePost, UpdatePost } from "../../api/posts";
+import useUser from "../../hooks/useUser";
 
 export default function NewPost() {
+  const { loggedIn } = useUser();
   const { slug } = useLocalSearchParams();
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<TPost | null>(null);
+
+  useFocusEffect(() => {
+    if (!loggedIn) router.replace("/");
+  });
 
   const fetchPost = async () => {
     try {
-      const result = (await ReadSinglePost(slug as string)) as Post;
+      const result = (await ReadSinglePost(slug as string)) as TPost;
       setPost(result);
     } catch (error) {
       console.error("Error fetching post:", error);
@@ -26,7 +36,7 @@ export default function NewPost() {
   }, [slug]);
 
   const editPost = useCallback(
-    async (data: Post) => {
+    async (data: TPost) => {
       try {
         await UpdatePost(slug as string, data);
         router.push(`/blog/${data.slug}`);

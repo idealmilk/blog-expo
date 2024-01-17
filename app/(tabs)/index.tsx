@@ -2,13 +2,12 @@ import { FlatList, Pressable, StyleSheet } from "react-native";
 
 import { Text, View } from "../../components/Themed";
 import { useEffect, useState } from "react";
-import { Post } from "../../types/Post";
+import { TPost } from "../../types/Post";
 import PostCard from "../../components/PostCard";
-import { Link } from "expo-router";
 import { ReadAllPosts } from "../../api/posts";
 
 export default function HomeScreen() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<TPost[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 

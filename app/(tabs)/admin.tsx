@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet } from "react-native";
-import { Link, router } from "expo-router";
+import { Link, router, useFocusEffect } from "expo-router";
 
 import { Text, View } from "../../components/Themed";
-import { Post } from "../../types/Post";
+import { TPost } from "../../types/Post";
 import IconButton from "../../components/IconButton";
 import axios from "axios";
 import { ReadAllPosts } from "../../api/posts";
 import dayjs from "../../utils/dayjs";
+import useUser from "../../hooks/useUser";
 
 export default function AdminScreen() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const { loggedIn } = useUser();
+  const [posts, setPosts] = useState<TPost[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
   const limit = 10;
+
+  useFocusEffect(() => {
+    if (!loggedIn) router.replace("/");
+  });
 
   const fetchPosts = async () => {
     try {

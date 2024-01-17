@@ -2,7 +2,7 @@ import axios from "axios";
 import { StyleSheet } from "react-native";
 
 import PostForm from "../../components/PostForm";
-import { Post } from "../../types/Post";
+import { TPost } from "../../types/Post";
 import { View } from "../../components/Themed";
 import { router } from "expo-router";
 import { useCallback, useState } from "react";
@@ -17,7 +17,7 @@ export default function NewPost() {
   });
 
   const createNewPost = useCallback(
-    async (data: Post) => {
+    async (data: TPost) => {
       try {
         await CreatePost(data);
         router.push(`/blog/${data.slug}`);
