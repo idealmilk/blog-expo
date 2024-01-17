@@ -14,9 +14,11 @@ export default function SignInScreen() {
     password: "",
   });
 
-  useFocusEffect(() => {
-    if (loggedIn) router.replace("/");
-  });
+  useFocusEffect(
+    useCallback(() => {
+      if (loggedIn) router.replace("/");
+    }, [loggedIn])
+  );
 
   const onSignInSubmit = useCallback(
     async (data: TAuthCredentials) => {

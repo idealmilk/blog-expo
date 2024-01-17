@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet } from "react-native";
 import { Link, router, useFocusEffect } from "expo-router";
 
@@ -18,9 +18,11 @@ export default function AdminScreen() {
 
   const limit = 10;
 
-  useFocusEffect(() => {
-    if (!loggedIn) router.replace("/");
-  });
+  useFocusEffect(
+    useCallback(() => {
+      if (!loggedIn) router.replace("/");
+    }, [loggedIn])
+  );
 
   const fetchPosts = async () => {
     try {
@@ -104,7 +106,7 @@ export default function AdminScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { paddingVertical: 20, paddingHorizontal: 20, height: "100%" },
+  container: { paddingHorizontal: 20, height: "100%" },
   list: {},
   item: {
     display: "flex",

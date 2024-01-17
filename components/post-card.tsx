@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { truncateString } from "./../helpers/truncateString";
-import { Text, View } from "./../components/Themed";
-import { TPost } from "./../types/Post";
+import { truncateString } from "../helpers/truncateString";
+import { Text, View } from "./themed";
+import { TPost } from "../types/Post";
 import { Link } from "expo-router";
 import { useMemo } from "react";
 import dayjs from "../utils/dayjs";

@@ -4,16 +4,16 @@ import { StyleSheet } from "react-native";
 
 import { ReadSinglePost } from "../../api/posts";
 import { Text, View } from "../../components/Themed";
-import { Post } from "./../../types/Post";
+import { TPost } from "./../../types/Post";
 import dayjs from "dayjs";
 
 export default function BlogPost() {
   const { slug } = useLocalSearchParams();
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<TPost | null>(null);
 
   const fetchPost = async () => {
     try {
-      const result = (await ReadSinglePost(slug as string)) as Post;
+      const result = (await ReadSinglePost(slug as string)) as TPost;
       setPost(result);
     } catch (error) {
       console.error("Error fetching post:", error);
@@ -43,7 +43,7 @@ export default function BlogPost() {
 }
 
 const styles = StyleSheet.create({
-  container: { width: "100%", height: "100%", paddingTop: 40 },
+  container: { width: "100%", height: "100%", paddingTop: 20 },
   wrap: { paddingHorizontal: 20 },
   date: {
     fontSize: 12,

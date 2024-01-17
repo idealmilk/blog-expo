@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { TextInput, StyleSheet, Pressable } from "react-native";
 
-import { View, Text } from "./../components/Themed";
-import { TPost } from "./../types/Post";
-import { TPostFormErrors } from "./../types/Post";
+import { View, Text } from "./themed";
+import { TPost } from "../types/Post";
+import { TPostFormErrors } from "../types/Post";
 import dayjs from "../utils/dayjs";
 
 type PostFormProps = {
@@ -57,19 +57,19 @@ export default function PostForm({ post, setPost, postAction }: PostFormProps) {
     return isValid;
   };
 
-  const handleChange = (name: string, value: string) => {
-    setPost((prevState: TPost[]) => ({
+  const handleChange = useCallback((name: string, value: string) => {
+    setPost((prevState: TPost) => ({
       ...prevState,
       [name]: value,
     }));
-  };
+  }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     const isValid = validatePost();
     if (isValid) {
       postAction(post);
     }
-  };
+  }, []);
 
   return (
     <View style={styles.form}>

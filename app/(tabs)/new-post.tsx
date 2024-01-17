@@ -36,5 +36,5 @@ export default function NewPost() {
 }
 
 const styles = StyleSheet.create({
-  container: { paddingVertical: 20, height: "100%" },
+  container: { height: "100%" },
 });

@@ -2,6 +2,7 @@ import { View, Text } from "./../components/Themed";
 import { TextInput, StyleSheet, Pressable } from "react-native";
 import { TAuthCredentials } from "../types/User";
 import { Link } from "expo-router";
+import { useCallback } from "react";
 
 type AuthFormProps = {
   credentials: TAuthCredentials;
@@ -16,16 +17,16 @@ export default function AuthForm({
   isRegister,
   postAction,
 }: AuthFormProps) {
-  const handleChange = (name: string, value: string) => {
+  const handleChange = useCallback((name: string, value: string) => {
     setCredentials((prevState: TAuthCredentials) => ({
       ...prevState,
       [name]: value,
     }));
-  };
+  }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     postAction(credentials);
-  };
+  }, []);
 
   return (
     <View style={styles.form}>

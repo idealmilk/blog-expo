@@ -18,9 +18,11 @@ export default function NewPost() {
   const { slug } = useLocalSearchParams();
   const [post, setPost] = useState<TPost | null>(null);
 
-  useFocusEffect(() => {
-    if (!loggedIn) router.replace("/");
-  });
+  useFocusEffect(
+    useCallback(() => {
+      if (!loggedIn) router.replace("/");
+    }, [loggedIn])
+  );
 
   const fetchPost = async () => {
     try {

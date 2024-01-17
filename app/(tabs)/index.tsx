@@ -69,7 +69,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    paddingTop: 20,
   },
   list: {},
   title: {
