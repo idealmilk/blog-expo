@@ -7,9 +7,9 @@ import {
 } from "expo-router";
 import { useState, useEffect, useCallback } from "react";
 
-import PostForm from "../../components/PostForm";
+import PostForm from "../../components/post-form";
 import { TPost } from "../../types/Post";
-import { Text, View } from "../../components/Themed";
+import { Text, View } from "../../components/themed";
 import { ReadSinglePost, UpdatePost } from "../../api/posts";
 import useUser from "../../hooks/useUser";
 

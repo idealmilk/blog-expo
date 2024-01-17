@@ -1,9 +1,9 @@
 import axios from "axios";
 import { StyleSheet } from "react-native";
 
-import PostForm from "../../components/PostForm";
+import PostForm from "../../components/post-form";
 import { TPost } from "../../types/Post";
-import { View } from "../../components/Themed";
+import { View } from "../../components/themed";
 import { router } from "expo-router";
 import { useCallback, useState } from "react";
 import { CreatePost } from "../../api/posts";

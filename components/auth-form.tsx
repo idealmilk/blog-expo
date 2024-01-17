@@ -1,4 +1,4 @@
-import { View, Text } from "./../components/Themed";
+import { View, Text } from "./themed";
 import { TextInput, StyleSheet, Pressable } from "react-native";
 import { TAuthCredentials } from "../types/User";
 import { Link } from "expo-router";

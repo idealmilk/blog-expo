@@ -1,9 +1,9 @@
 import { FlatList, Pressable, StyleSheet } from "react-native";
 
-import { Text, View } from "../../components/Themed";
+import { Text, View } from "../../components/themed";
 import { useEffect, useState } from "react";
 import { TPost } from "../../types/Post";
-import PostCard from "../../components/PostCard";
+import PostCard from "../../components/post-card";
 import { ReadAllPosts } from "../../api/posts";
 
 export default function HomeScreen() {

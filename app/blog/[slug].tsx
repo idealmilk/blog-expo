@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 
 import { ReadSinglePost } from "../../api/posts";
-import { Text, View } from "../../components/Themed";
+import { Text, View } from "../../components/themed";
 import { TPost } from "./../../types/Post";
 import dayjs from "dayjs";
 

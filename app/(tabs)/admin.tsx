@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet } from "react-native";
 import { Link, router, useFocusEffect } from "expo-router";
 
-import { Text, View } from "../../components/Themed";
+import { Text, View } from "../../components/themed";
 import { TPost } from "../../types/Post";
-import IconButton from "../../components/IconButton";
+import IconButton from "../../components/icon-button";
 import axios from "axios";
 import { ReadAllPosts } from "../../api/posts";
 import dayjs from "../../utils/dayjs";
